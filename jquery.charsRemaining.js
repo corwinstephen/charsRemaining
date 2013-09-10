@@ -29,10 +29,21 @@ function updateCount(element, counter_field, max_chars){
       $(this).after(counter_field)
 
       // Update the count
-      updateCount(this, counter_field, settings.maxLength);
-      $(this).keyup(function(){
-        updateCount(this, counter_field, settings.maxLength);
-      })
+      var el = this
+      var update = function(){
+        updateCount(el, counter_field, settings.maxLength);
+      }
+      update();
+      $(this)
+        .keyup(function(){
+          update();
+        })
+        .keydown(function(){
+          setTimeout(update, 0);
+        })
+        .bind('paste', function(){
+          setTimeout(update, 0);
+        })
 
     })
   };
